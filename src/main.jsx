@@ -9,6 +9,8 @@ const initialStore = {
   messageToUser: "",
   userInput: "",
   enableDarkMode: false,
+  isAuthenticated: false,
+  user: null,
 };
 export const actionTypes = {
   tellUserGoodbye: "TELL_USER_GOODBYE",
@@ -17,6 +19,8 @@ export const actionTypes = {
   updateInputText: "UPDATE_INPUT_TEXT",
   displayUserInput: "DISPLAY_USER_INPUT",
   enableDarkMode: "ENABLE_DARK_MODE",
+  signIn: "SIGN_IN",
+  signOut: "SIGN_OUT",
 };
 
 function reducer(prevState = initialStore, action) {
@@ -43,6 +47,26 @@ function reducer(prevState = initialStore, action) {
         ...prevState,
         enableDarkMode: !prevState.enableDarkMode,
       };
+    case actionTypes.signIn:
+      if (
+        action.payload.username === "khalil" &&
+        action.payload.password === "1"
+      )
+        return {
+          ...prevState,
+          isAuthenticated: true,
+          user: { username: action.payload.username },
+        };
+
+      break;
+
+    case "SIGN_OUT":
+      return {
+        ...prevState,
+        isAuthenticated: false,
+        user: null,
+      };
+
     default:
       return prevState;
   }
