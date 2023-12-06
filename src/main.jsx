@@ -1,36 +1,42 @@
-import React from "react";
-import ReactDOM from "react-dom/client";
-import App from "./App.jsx";
-import "./index.css";
-import { createStore } from "redux";
-import { Provider } from "react-redux";
+import React from 'react';
+import ReactDOM from 'react-dom/client';
+import App from './App.jsx';
+import './index.css';
+import { createStore } from 'redux';
+import { Provider } from 'react-redux';
 
 const initialStore = {
-  messageToUser: "",
-  userInput: "",
+  messageToUser: '',
+  userInput: '',
   enableDarkMode: false,
   isAuthenticated: false,
   user: null,
+  signInScreen: {
+    usernameInput: '',
+    passwordInput: '',
+  },
 };
 export const actionTypes = {
-  tellUserGoodbye: "TELL_USER_GOODBYE",
-  tellUserHello: "TELL_USER_HELLO",
-  tellUserWhatsUp: "TELL_USER_WHATS_UP",
-  updateInputText: "UPDATE_INPUT_TEXT",
-  displayUserInput: "DISPLAY_USER_INPUT",
-  enableDarkMode: "ENABLE_DARK_MODE",
-  signIn: "SIGN_IN",
-  signOut: "SIGN_OUT",
+  tellUserGoodbye: 'TELL_USER_GOODBYE',
+  tellUserHello: 'TELL_USER_HELLO',
+  tellUserWhatsUp: 'TELL_USER_WHATS_UP',
+  updateInputText: 'UPDATE_INPUT_TEXT',
+  displayUserInput: 'DISPLAY_USER_INPUT',
+  enableDarkMode: 'ENABLE_DARK_MODE',
+  signIn: 'SIGN_IN',
+  signOut: 'SIGN_OUT',
+  updateSignInScreenUsernameInput: 'UPDATE_SIGN_IN_SCREEN_USERNAME_INPUT',
+  updateSignInScreenPasswordInput: 'UPDATE_SIGN_IN_SCREEN_PASSWORD_INPUT',
 };
 
 function reducer(prevState = initialStore, action) {
   switch (action.type) {
     case actionTypes.tellUserGoodbye:
-      return { ...prevState, messageToUser: "Goodbye" };
+      return { ...prevState, messageToUser: 'Goodbye' };
     case actionTypes.tellUserHello:
-      return { ...prevState, messageToUser: "Hello" };
+      return { ...prevState, messageToUser: 'Hello' };
     case actionTypes.tellUserWhatsUp:
-      return { ...prevState, messageToUser: "Whats up!" };
+      return { ...prevState, messageToUser: 'Whats up!' };
     case actionTypes.updateInputText:
       return {
         ...prevState,
@@ -40,7 +46,7 @@ function reducer(prevState = initialStore, action) {
       return {
         ...prevState,
         messageToUser: prevState.userInput,
-        userInput: "",
+        userInput: '',
       };
     case actionTypes.enableDarkMode:
       return {
@@ -49,8 +55,8 @@ function reducer(prevState = initialStore, action) {
       };
     case actionTypes.signIn:
       if (
-        action.payload.username === "khalil" &&
-        action.payload.password === "1"
+        action.payload.username === 'khalil' &&
+        action.payload.password === '1'
       )
         return {
           ...prevState,
@@ -60,13 +66,28 @@ function reducer(prevState = initialStore, action) {
 
       break;
 
-    case "SIGN_OUT":
+    case 'SIGN_OUT':
       return {
         ...prevState,
         isAuthenticated: false,
         user: null,
       };
-
+    case actionTypes.updateSignInScreenUsernameInput:
+      return {
+        ...prevState,
+        signInScreen: {
+          ...prevState.signInScreen,
+          usernameInput: action.payload,
+        },
+      };
+    case actionTypes.updateSignInScreenPasswordInput:
+      return {
+        ...prevState,
+        signInScreen: {
+          ...prevState.signInScreen,
+          passwordInput: action.payload,
+        },
+      };
     default:
       return prevState;
   }
@@ -77,7 +98,7 @@ const store = createStore(
   window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
 );
 
-ReactDOM.createRoot(document.getElementById("root")).render(
+ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
     <Provider store={store}>
       <App />

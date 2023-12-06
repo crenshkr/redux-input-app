@@ -1,18 +1,25 @@
-import "./App.css";
-import "./index.css";
-import { useSelector, useDispatch } from "react-redux";
+import './App.css';
+import './index.css';
+import { useSelector, useDispatch } from 'react-redux';
 
-import { actionTypes } from "./main";
+import { actionTypes } from './main';
 
 function App() {
-  const isAuthenticated = useSelector((state) => state.isAuthenticated);
-  const user = useSelector((state) => state.user);
+  const isAuthenticated = useSelector(state => state.isAuthenticated);
+  const user = useSelector(state => state.user);
 
-  const userMessages = useSelector((state) => state.messageToUser);
+  const userMessages = useSelector(state => state.messageToUser);
 
-  const updatedMessage = useSelector((state) => state.userInput);
+  const updatedMessage = useSelector(state => state.userInput);
 
-  const enableDarkMode = useSelector((state) => state.enableDarkMode);
+  const enableDarkMode = useSelector(state => state.enableDarkMode);
+
+  const signInPageUsernameInput = useSelector(
+    state => state.signInScreen.usernameInput
+  );
+  const signInPagePasswordInput = useSelector(
+    state => state.signInScreen.passwordInput
+  );
 
   const dispatch = useDispatch();
 
@@ -26,7 +33,7 @@ function App() {
   });
 
   function handleSignIn() {
-    dispatch(signIn("khalil", "1"));
+    dispatch(signIn('khalil', '1'));
   }
   const handleSignOut = () => {
     dispatch(signOut());
@@ -59,29 +66,29 @@ function App() {
             <button onClick={handleSignOut}>Sign Out</button>
           </div>
 
-          <div className={enableDarkMode ? "dark-mode" : "light-mode"}>
+          <div className={enableDarkMode ? 'dark-mode' : 'light-mode'}>
             <button
-              className={enableDarkMode ? "btn-dark-mode" : "btn-light-mode"}
+              className={enableDarkMode ? 'btn-dark-mode' : 'btn-light-mode'}
               onClick={toggleDarkMode}
             >
               Toggle Dark Mode
             </button>
-            <h1>{enableDarkMode ? "dark-mode" : "light-mode"}</h1>
+            <h1>{enableDarkMode ? 'dark-mode' : 'light-mode'}</h1>
             <p>Message: {userMessages}</p>
             <button
-              className={enableDarkMode ? "btn-dark-mode" : "btn-light-mode"}
+              className={enableDarkMode ? 'btn-dark-mode' : 'btn-light-mode'}
               onClick={goodbyeMessage}
             >
               Say Goodbye
             </button>
             <button
-              className={enableDarkMode ? "btn-dark-mode" : "btn-light-mode"}
+              className={enableDarkMode ? 'btn-dark-mode' : 'btn-light-mode'}
               onClick={helloMessage}
             >
               Say Hello
             </button>
             <button
-              className={enableDarkMode ? "btn-dark-mode" : "btn-light-mode"}
+              className={enableDarkMode ? 'btn-dark-mode' : 'btn-light-mode'}
               onClick={whatsMessage}
             >
               Say Whats Up
@@ -90,7 +97,7 @@ function App() {
               <input
                 type="text"
                 value={updatedMessage}
-                onChange={(e) =>
+                onChange={e =>
                   dispatch({
                     type: actionTypes.updateInputText,
                     payload: e.target.value,
@@ -98,7 +105,7 @@ function App() {
                 }
               ></input>
               <button
-                className={enableDarkMode ? "btn-dark-mode" : "btn-light-mode"}
+                className={enableDarkMode ? 'btn-dark-mode' : 'btn-light-mode'}
                 onClick={displayUserInput}
               >
                 Update Message
@@ -108,11 +115,33 @@ function App() {
         </div>
       ) : (
         <div>
-          <h2>Sign In</h2>
-          <input type="text" value="khalil" placeholder="Username" />
+          <h1>Sign In</h1>
+          <input
+            type="text"
+            value={signInPageUsernameInput}
+            placeholder="Username"
+            onChange={event => {
+              console.log(event.target.value);
+              dispatch({
+                type: actionTypes.updateSignInScreenUsernameInput,
+                payload: event.target.value,
+              });
+            }}
+          />
 
           <br />
-          <input type="password" value="1" placeholder="password" />
+          <input
+            type="password"
+            value={signInPagePasswordInput}
+            placeholder="password"
+            onChange={event => {
+              console.log(event.target.value);
+              dispatch({
+                type: actionTypes.updateSignInScreenPasswordInput,
+                payload: event.target.value,
+              });
+            }}
+          />
 
           <br />
           <button onClick={handleSignIn} disabled={isAuthenticated}>
